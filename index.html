@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja" x-data="app()" x-init="init()">
 <head>
+ <script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CCstudio | HP・LP制作 / 販売サイト制作 / 業務効率化</title>
@@ -514,7 +518,9 @@
       </div>
       <div>
         <div class="font-semibold text-white">お問い合わせ</div>
-        <div class="mt-2">電話：<a :href="'tel:'+phoneNumber" class="underline">{{phoneNumber}}</a></div>
+      <div class="mt-2">電話：
+  <a :href="'tel:'+phoneNumber" class="underline"><span x-text="phoneNumber"></span></a>
+</div>
         <div class="mt-1">メール：<a href="#" @click.prevent="openMail()" class="underline">info@ccstudio.example</a></div>
         <div class="mt-2 text-xs">※「<span class="font-semibold">CCstudioのサイトを見た</span>」とお伝えください。</div>
       </div>
@@ -700,8 +706,8 @@
           ];
           for (const l of lines){
             for(let i=0;i<l.length;i++){ this.typed += l[i]; await this._pause(18 + Math.random()*14); }
-            this.typed += '
-'; await this._pause(260);
+this.typed += '\n';
+await this._pause(260);
           }
           this.editorToBg = true;
         },
