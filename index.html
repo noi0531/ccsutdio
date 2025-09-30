@@ -15,8 +15,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Noto+Sans+JP:wght@400;600;800&display=swap" rel="stylesheet">
   <!-- LCP 改善: 最初のヒーロー画像をpreload（JSでhrefを注入）-->
   <link id="preload-hero" rel="preload" as="image">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
     :root{
       --bg:#0b0f14; --panel:#111827; --ink:#e5e7eb; --muted:#94a3b8; --line:#1f2937; --pri:#6ee7ff; --pri2:#22d3ee; --acc:#a78bfa; --grad1:#111827; --grad2:#0b0f14;
@@ -601,38 +599,51 @@
   </div>
 
   <script>
-    function app(){
-      return {
-        year: new Date().getFullYear(),
-        theme: localStorage.getItem('cc-theme') || 'cyan',
-        get themeClass(){ return this.theme==='violet' ? 'theme-violet' : '' },
-        phoneNumber: '080-1234-5678',
-        phoneCaption: '',
-        modals: { estimate:false, mail:false },
-        open: { hp:false, ec:false, dx:false },
-        form: { company:'', name:'', email:'', services:[], note:'' },
-        // Intro typing state
-        intro: { active:true, text:'', step:1, showCaret:true },
-        // Hero/editor
-        heroPhrases: ['挑戦者としてありつづける', 'C(Creative) × C(Challenger)'],
-        heroTyped: '',
-        slides: [
-          'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600&auto=format&fit=crop',
-          'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1600&auto=format&fit=crop',
-          'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1600&auto=format&fit=crop'
-        ],
-        instagram: [
-          'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop',
-          'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop',
-          'https://images.unsplash.com/photo-1526498460520-4c246339dccb?q=80&w=800&auto=format&fit=crop',
-          'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop',
-          'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop',
-          'https://images.unsplash.com/photo-1526498460520-4c246339dccb?q=80&w=800&auto=format&fit=crop'
-        ],
-        typed: '',
-        editorToBg:false,
-        slideIndex:0,
+init(){
+  if (this._booted) return;
+  this._booted = true;
+  // 残りのinitの内容…
+},
 
+async _introSequence(){
+  await this._typeIntoIntro('挑戦者としてありつづける', 90);
+  this.intro.step = 2; await this._pause(600);
+  this.intro.text = '';
+  await this._typeIntoIntro('C(Creative) × C(Challenger)', 95);
+  await this._pause(700);
+  this.intro.showCaret = false;
+  setTimeout(()=>{ this.intro.active = false; this.editorToBg = true; }, 350);
+},
+
+async _startHeroTyping(){
+  const phrases = this.heroPhrases.slice();
+  for (let p=0; p<phrases.length; p++){
+    const str = phrases[p];
+    for(let i=0;i<=str.length;i++){ this.heroTyped = str.slice(0,i); await this._pause(70 + Math.random()*30); }
+    await this._pause(1400);
+    if (p < phrases.length - 1){
+      for(let i=str.length; i>=0; i--){ this.heroTyped = str.slice(0,i); await this._pause(40 + Math.random()*20); }
+      await this._pause(400);
+    }
+  }
+},
+
+async _startEditorTyping(){
+  const lines = [
+    '/* CCstudio — Build fast. Ship beautiful. */',
+    'const pillars = ["HP/LP", "EC", "DX"];',
+    'ship({ design:true, speed:true, seo:true });'
+  ];
+  for (const l of lines){
+    for(let i=0;i<l.length;i++){
+      this.typed += l[i];
+      await this._pause(28 + Math.random()*24);
+    }
+    this.typed += '\n';
+    await this._pause(420);
+  }
+  this.editorToBg = true;
+}
         init(){
           const isMobile = /iPhone|Android.+Mobile|Windows Phone|webOS|BlackBerry/i.test(navigator.userAgent);
           this.phoneCaption = isMobile
