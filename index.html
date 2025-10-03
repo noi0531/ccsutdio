@@ -16,9 +16,7 @@
     /* HERO動画 */
     .hero-vid{ filter:saturate(1.18) contrast(1.05) brightness(.78) hue-rotate(10deg); animation:heroZoom 18s ease-in-out infinite alternate }
     @keyframes heroZoom{ from{transform:scale(1.02)} to{transform:scale(1.06)} }
- @media (prefers-reduced-motion: reduce){
-  .hero-vid{ animation:none; filter:brightness(.85); }
-}
+    @media (prefers-reduced-motion: reduce){ .hero-vid{ display:none } }
 
     :root{
       --bg:#0b0f14; --ink:#e5e7eb;
@@ -170,19 +168,14 @@
     <!-- HERO（動画背景＋本文 復活） -->
     <section id="top" class="pt-28 md:pt-36 pb-44 relative overflow-hidden">
       <!-- SP: 画像 / PC: 動画 -->
-<!-- SP: 画像 / PC: 動画 -->
-<picture class="absolute inset-0 block md:hidden">
-  <img src="assets/hero-lighttrails-poster.jpg" alt="" class="w-full h-full object-cover">
-</picture>
-
-<video id="heroVideo"
-       class="absolute inset-0 w-full h-full object-cover hidden md:block hero-vid"
-       autoplay muted playsinline loop preload="auto"
-       poster="assets/hero-lighttrails-poster.jpg">
-  <source src="assets/hero-lighttrails.mp4" type="video/mp4">
-  <source src="assets/hero-lighttrails.webm" type="video/webm">
-  <!-- ブラウザがどちらか再生できなければポスターが出ます -->
-</video>
+      <picture class="absolute inset-0 block md:hidden">
+        <img src="/assets/hero-lighttrails-poster.jpg" alt="" class="w-full h-full object-cover">
+      </picture>
+      <video class="absolute inset-0 w-full h-full object-cover hidden md:block hero-vid"
+             autoplay muted playsinline loop preload="metadata"
+             poster="/assets/hero-lighttrails-poster.jpg">
+        <source src="/assets/hero-lighttrails.mp4" type="video/mp4">
+      </video>
       <!-- オーバーレイ -->
       <div class="absolute inset-0 pointer-events-none"
            style="background:
@@ -608,22 +601,6 @@ const run = () => audit() && optimize();
           this._initProgress();
           this._bindScrollCode();
         },
-// ---- HERO動画のオートプレイ補助 ----
-setTimeout(()=>{
-  const v = document.getElementById('heroVideo');
-  if(!v) return;
-  // iOS/Safari 安定化
-  v.muted = true; 
-  const tryPlay = () => v.play().catch(()=>{ /* 無音で握りつぶす */ });
-
-  // 1) すぐ試す
-  tryPlay();
-
-  // 2) 初回ユーザー操作で確実に再生
-  const resume = () => { tryPlay(); window.removeEventListener('pointerdown', resume); window.removeEventListener('touchstart', resume); };
-  window.addEventListener('pointerdown', resume, { once:true });
-  window.addEventListener('touchstart', resume, { once:true });
-}, 0);
 
         async _intro(){
           const code =
