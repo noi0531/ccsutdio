@@ -74,7 +74,7 @@
     .bg-voices{--overlay:linear-gradient(180deg,rgba(10,20,40,.35),rgba(0,0,0,.88))}
     .bg-about{--overlay:linear-gradient(180deg,rgba(40,30,10,.35),rgba(0,0,0,.88))}
 
-    /* お困りカード */
+    /* お困りカード（共通） */
     .p-card{position:relative; border-radius:24px; padding:28px; overflow:hidden; border:1px solid rgba(255,255,255,.12);
       background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03))}
     .p-card::before{content:""; position:absolute; inset:-1px; border-radius:26px; padding:1px;
@@ -123,6 +123,62 @@
     .sns a:hover{transform:translateY(-2px); filter:saturate(120%)}
 
     main.site{ position:relative; z-index:5; }
+
+    /* ========= Painpoints XL Add-on ========= */
+    .pain-xl h2{
+      font-size:clamp(28px,5.2vw,58px);
+      letter-spacing:.01em;
+      text-shadow:0 14px 40px rgba(0,0,0,.45);
+    }
+    .pain-eyebrow{
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding:.28rem .66rem; border-radius:999px;
+      background:linear-gradient(135deg,rgba(34,211,238,.18),rgba(167,139,250,.18));
+      border:1px solid rgba(255,255,255,.18);
+      font-weight:800; color:#c7f9ff; font-size:.88rem;
+    }
+    .pain-xl .grid{ gap:clamp(16px,2.4vw,32px); }
+    .pain-xl .container{ max-width:min(1200px,92vw); }
+
+    .p-card.pain{
+      padding:clamp(26px,3vw,42px);
+      border-radius:28px;
+      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
+    }
+    .p-card.pain .p-icon{
+      position:relative;
+      width:72px; height:72px; border-radius:20px;
+      font-size:20px; display:grid; place-items:center;
+      background:linear-gradient(135deg,var(--c1),var(--c2));
+      color:#061016; font-weight:900;
+      box-shadow:0 8px 28px rgba(34,211,238,.28);
+    }
+    .p-card.pain .p-icon::after{
+      content:""; position:absolute; inset:-8px; border-radius:inherit;
+      background:radial-gradient(60% 60% at 50% 50%, rgba(34,211,238,.45), transparent 60%);
+      filter:blur(10px); opacity:.55; z-index:-1;
+    }
+    .p-card-number{
+      position:absolute; top:14px; right:18px;
+      font-weight:900; font-size:clamp(16px,2.2vw,24px); color:#a5f3fc; opacity:.9;
+      letter-spacing:.02em;
+    }
+    .p-title{ font-size:clamp(18px,2.4vw,28px); }
+    .p-desc{ font-size:clamp(14px,1.5vw,18px); opacity:.96; }
+    .p-underline{height:2px; background:linear-gradient(90deg,var(--c1),transparent);
+      margin-top:.8rem; opacity:.9; transform-origin:left; transform:scaleX(.08);
+      transition:transform .6s ease;
+    }
+    .reveal.is-visible .p-underline{ transform:scaleX(1); }
+    .p-card.pain:hover{ box-shadow:0 26px 90px rgba(0,0,0,.55); }
+    .p-card.pain::after{
+      content:""; position:absolute; inset:-20%;
+      background:radial-gradient(600px 360px at var(--gx,60%) var(--gy,20%),
+        rgba(34,211,238,.14), transparent 60%);
+      filter:blur(18px); z-index:-1; transition:opacity .3s ease, transform .3s ease; opacity:.7;
+    }
+    .p-card.pain:hover::after{ transform:scale(1.05); opacity:.95; }
+    /* ========= /Painpoints XL ========= */
   </style>
 </head>
 
@@ -165,17 +221,18 @@
       </div>
     </header>
 
-    <!-- HERO（動画背景＋本文 復活） -->
+    <!-- HERO（動画背景＋本文） -->
     <section id="top" class="pt-28 md:pt-36 pb-44 relative overflow-hidden">
       <!-- SP: 画像 / PC: 動画 -->
       <picture class="absolute inset-0 block md:hidden">
         <img src="/assets/hero-lighttrails-poster.jpg" alt="" class="w-full h-full object-cover">
       </picture>
-      <video class="absolute inset-0 w-full h-full object-cover hidden md:block hero-vid"
-             autoplay muted playsinline loop preload="metadata"
-             poster="/assets/hero-lighttrails-poster.jpg">
-        <source src="/assets/hero-lighttrails.mp4" type="video/mp4">
-      </video>
+<video id="heroVideo"
+  class="absolute inset-0 w-full h-full object-cover hidden md:block hero-vid"
+  autoplay muted playsinline webkit-playsinline loop preload="metadata"
+  poster="assets/hero-meeting-poster.jpg">
+  <source src="assets/hero-meeting.mp4" type="video/mp4">
+</video>
       <!-- オーバーレイ -->
       <div class="absolute inset-0 pointer-events-none"
            style="background:
@@ -187,7 +244,7 @@
       <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="mt-6 md:mt-10 space-y-4">
           <h1 class="headline text-stable-jp font-black leading-[0.95] text-[12vw] md:text-[8vw]"
-              x-show="hero.showTitle" x-transition.opacity>ホームページ作成</h1>
+              x-show="hero.showTitle" x-transition.opacity>常に挑戦者で─。</h1>
 
           <div class="text-stable-jp font-black text-[6vw] md:text-[3.6vw]"
                x-show="hero.showSub" x-transition.opacity>
@@ -212,32 +269,39 @@
       </div>
     </section>
 
-    <!-- ① お困りごと -->
-    <section id="painpoints" class="sec bg-pain py-18"
+    <!-- ① お困りごと（XL版） -->
+    <section id="painpoints" class="sec bg-pain py-24 pain-xl"
       style="background-image:url('https://images.unsplash.com/photo-1529676468690-ae0e1a6f1413?q=80&w=1600&auto=format&fit=crop'); background-size:cover; background-position:center;">
-      <div class="max-w-6xl mx-auto px-4">
-        <h2 class="text-3xl md:text-4xl font-black text-stable-jp reveal" data-reveal>こんなことでお困りではありませんか？</h2>
+      <div class="container mx-auto px-4">
+        <span class="pain-eyebrow">Problems we solve</span>
+        <h2 class="mt-3 font-black text-stable-jp reveal" data-reveal>こんなことでお困りではありませんか？</h2>
 
-        <div class="mt-8 grid md:grid-cols-3 gap-6">
-          <article class="p-card reveal" data-reveal @mousemove="tilt($event)" @mouseleave="untilt($event)">
+        <div class="mt-8 grid md:grid-cols-3">
+          <!-- 01 -->
+          <article class="p-card pain reveal relative" data-reveal @mousemove="tilt($event)" @mouseleave="untilt($event)">
+            <span class="p-card-number">01</span>
             <div class="p-icon">UI</div>
-            <h3 class="mt-4 text-xl font-extrabold text-stable-jp">古い / スマホで見づらい</h3>
+            <h3 class="mt-5 p-title font-extrabold text-stable-jp">スマホで見にくい</h3>
             <div class="p-underline"></div>
-            <p class="text-slate-200/95 mt-3 text-stable-jp" data-type="高速表示・スマホ最適・写真/文章の見直しで“伝わる”サイトに刷新。"></p>
+            <p class="p-desc text-slate-200 mt-3 text-stable-jp" data-type="高速表示・スマホ最適・写真/文章の見直しで“伝わる”サイトに刷新。"></p>
           </article>
 
-          <article class="p-card reveal" data-reveal @mousemove="tilt($event)" @mouseleave="untilt($event)">
+          <!-- 02 -->
+          <article class="p-card pain reveal relative" data-reveal @mousemove="tilt($event)" @mouseleave="untilt($event)">
+            <span class="p-card-number">02</span>
             <div class="p-icon">CV</div>
-            <h3 class="mt-4 text-xl font-extrabold text-stable-jp">問い合わせが伸びない</h3>
+            <h3 class="mt-5 p-title font-extrabold text-stable-jp">問い合わせが伸びない</h3>
             <div class="p-underline"></div>
-            <p class="text-slate-200/95 mt-3 text-stable-jp" data-type="導線再設計＋簡易AB、SEO初期対策でCVRを底上げ。"></p>
+            <p class="p-desc text-slate-200 mt-3 text-stable-jp" data-type="導線再設計＋簡易AB、SEO初期対策でCVRを底上げ。"></p>
           </article>
 
-          <article class="p-card reveal" data-reveal @mousemove="tilt($event)" @mouseleave="untilt($event)">
+          <!-- 03 -->
+          <article class="p-card pain reveal relative" data-reveal @mousemove="tilt($event)" @mouseleave="untilt($event)">
+            <span class="p-card-number">03</span>
             <div class="p-icon">TX</div>
-            <h3 class="mt-4 text-xl font-extrabold text-stable-jp">素材準備が大変</h3>
+            <h3 class="mt-5 p-title font-extrabold text-stable-jp">素材準備が大変</h3>
             <div class="p-underline"></div>
-            <p class="text-slate-200/95 mt-3 text-stable-jp" data-type="撮影・コピー作成も対応。既存素材のブラッシュアップもOK。"></p>
+            <p class="p-desc text-slate-200 mt-3 text-stable-jp" data-type="撮影・コピー作成も対応。既存素材のブラッシュアップもOK。"></p>
           </article>
         </div>
       </div>
@@ -260,8 +324,8 @@
                 <span class="px-2 py-1 text-xs rounded-full bg-cyan-500/20 text-cyan-200 font-bold">人気</span>
               </div>
               <div class="mt-4">
-                <div class="text-5xl md:text-6xl font-black leading-none">¥100,000〜</div>
-                <div class="text-4xl md:text-5xl font-black text-slate-300 mt-1">〜¥1,000,000</div>
+                <div class="text-5xl md:text-6xl font-black leading-none">¥1万円〜</div>
+                <div class="text-4xl md:text-5xl font-black text-slate-300 mt-1">¥10万円</div>
               </div>
               <ul class="mt-5 space-y-2 text-slate-300 text-stable-jp">
                 <li class="reveal" data-reveal data-type="デザイン/実装・基本SEO・解析タグ（GA4/タグマネ）"></li>
@@ -281,8 +345,8 @@
             <div class="relative z-10">
               <h3 class="text-xl font-extrabold text-stable-jp">EC サイト</h3>
               <div class="mt-4">
-                <div class="text-5xl md:text-6xl font-black leading-none">¥300,000〜</div>
-                <div class="text-4xl md:text-5xl font-black text-slate-300 mt-1">〜¥3,000,000</div>
+                <div class="text-5xl md:text-6xl font-black leading-none">1万円〜</div>
+                <div class="text-4xl md:text-5xl font-black text-slate-300 mt-1">〜¥10万円</div>
               </div>
               <ul class="mt-5 space-y-2 text-slate-300 text-stable-jp">
                 <li class="reveal" data-reveal data-type="Shopify/BASE/Headless から最適方式を選定"></li>
@@ -302,8 +366,8 @@
             <div class="relative z-10">
               <h3 class="text-xl font-extrabold text-stable-jp">業務効率化 / DX</h3>
               <div class="mt-4">
-                <div class="text-5xl md:text-6xl font-black leading-none">¥100,000〜</div>
-                <div class="text-4xl md:text-5xl font-black text-slate-300 mt-1">〜¥3,000,000</div>
+                <div class="text-5xl md:text-6xl font-black leading-none">¥10万円〜</div>
+                <div class="text-4xl md:text-5xl font-black text-slate-300 mt-1">¥50万円</div>
               </div>
               <ul class="mt-5 space-y-2 text-slate-300 text-stable-jp">
                 <li class="reveal" data-reveal data-type="見積/請求・在庫・勤怠などの軽量自動化（小さく早く）"></li>
@@ -389,7 +453,7 @@
               <p class="mt-3 text-lg text-stable-jp" :data-type="item.text"></p>
             </article>
           </template>
-          <!-- 追加4 -->
+
           <article class="min-w-[82%] md:min-w-[46%] glass rounded-2xl p-6 reveal" data-reveal>
             <div class="flex items-center gap-4">
               <img src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=256&auto=format&fit=crop" class="w-16 h-16 rounded-full object-cover" alt="">
@@ -537,7 +601,7 @@
     function app(){
       return {
         year: new Date().getFullYear(),
-        phoneNumber: '070-3956-5564', // ← 追加：電話ボタンで使用
+        phoneNumber: '070-3956-5564',
         _started:false, _heroStarted:false,
         isCoarse:false,
 
@@ -559,7 +623,7 @@ import { audit, track } from "./core/analytics.js";
 import { optimize } from "./core/optimize.js";
 
 // Focus
-const focus = "ホームページ作成";
+const focus = "常に挑戦者であれ─。";
 const pillars = ["Design","Dev","SEO","Speed","A11y"];
 const speed = "最短5営業日";
 
@@ -600,6 +664,18 @@ const run = () => audit() && optimize();
           this._initReveal();
           this._initProgress();
           this._bindScrollCode();
+
+          // HERO動画のオートプレイ補助（Safari/iOS対策）
+          setTimeout(()=>{
+            const v = document.getElementById('heroVideo');
+            if(!v) return;
+            v.muted = true;
+            const tryPlay = () => v.play().catch(()=>{});
+            tryPlay();
+            const resume = () => { tryPlay(); window.removeEventListener('pointerdown', resume); window.removeEventListener('touchstart', resume); };
+            window.addEventListener('pointerdown', resume, { once:true });
+            window.addEventListener('touchstart', resume, { once:true });
+          }, 0);
         },
 
         async _intro(){
@@ -610,7 +686,7 @@ import { audit, track } from "./core/analytics.js";
 import { optimize } from "./core/optimize.js";
 
 // Focus
-const focus = "ホームページ作成";
+const focus = "常に挑戦者であれ─。";
 const pillars = ["Design","Dev","SEO","Speed","A11y"];
 const speed = "最短5営業日";`;
           this.typed=''; for(let i=0;i<code.length;i++){ this.typed += code[i]; await this._pause(6+Math.random()*6); }
@@ -626,13 +702,13 @@ const speed = "最短5営業日";`;
 
           this.hero.showTitle = true; await this._pause(200);
           this.hero.showSub = true; this.hero.showSubCaret = true;
-          const sub = 'ビジネスの“顔”を、最短で育てる。';
+          const sub = '企業の顔を、最高クオリティで創る。';
           this.hero.subTyped=''; for(let i=0;i<sub.length;i++){ this.hero.subTyped += sub[i]; await this._pause(24 + Math.random()*10); }
           this.hero.showSubCaret=false;
 
           await this._pause(160);
           this.hero.showTagline = true; this.hero.showTaglineCaret = true;
-          const tag = 'SEO・速度・解析コミコミで、最短5営業日で初版公開。';
+          const tag = 'C(Creative)C(Challenger)studio';
           this.hero.taglineTyped=''; for(let i=0;i<tag.length;i++){ this.hero.taglineTyped += tag[i]; await this._pause(56 + Math.random()*22); }
           this.hero.showTaglineCaret=false;
         },
@@ -672,7 +748,7 @@ const speed = "最短5営業日";`;
         serviceBtn(name){ return 'px-3 py-2 rounded-lg border transition '+(this.form.services.includes(name)?'bg-cyan-500/20 border-cyan-300/50 text-cyan-100 font-bold':'bg-black/30 border-white/15 text-slate-200 hover:border-white/30'); },
         toggleService(name){ const i=this.form.services.indexOf(name); if(i>=0)this.form.services.splice(i,1); else this.form.services.push(name); },
         async submitConsult(){
-          const WEBHOOK_URL=''; // Slack Incoming Webhook
+          const WEBHOOK_URL='';
           const payload={ text:`【相談】\nお名前: ${this.form.name}\n会社名: ${this.form.company}\nサービス: ${this.form.services.join(',')}\nメール: ${this.form.email}\n要望:\n${this.form.note}` };
           try{ if(WEBHOOK_URL){ await fetch(WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); }
             else{ console.log('Slack payload',payload); }
@@ -706,7 +782,7 @@ const speed = "最短5営業日";`;
         _bindScrollCode(){
           const update=()=>{
             const h=document.documentElement, sc=h.scrollTop, max=h.scrollHeight-h.clientHeight, pct=max>0?sc/max:0;
-            this.scrollIndex=Math.floor(this.scrollCode.length * (pct*1.05)); // 少し先行してタイプ
+            this.scrollIndex=Math.floor(this.scrollCode.length * (pct*1.05));
           };
           update(); addEventListener('scroll',update,{passive:true}); addEventListener('resize',update);
         },
