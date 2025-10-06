@@ -16,10 +16,11 @@
     /* HERO動画 */
     .hero-vid{ filter:saturate(1.18) contrast(1.05) brightness(.78) hue-rotate(10deg); animation:heroZoom 18s ease-in-out infinite alternate }
     @keyframes heroZoom{ from{transform:scale(1.02)} to{transform:scale(1.06)} }
-   /* 置き換え */
-@media (prefers-reduced-motion: reduce){
-  .hero-vid{ animation:none; filter:brightness(.85); } /* display:none をやめる */
-}
+    /* reduce-motion でも非表示にしない */
+    @media (prefers-reduced-motion: reduce){
+      .hero-vid{ animation:none; filter:brightness(.85); }
+    }
+
     :root{
       --bg:#0b0f14; --ink:#e5e7eb;
       --c1:#22d3ee; --c2:#a78bfa; --c3:#f472b6;
@@ -30,7 +31,7 @@
     .text-stable-jp{font-family:"Noto Sans JP", system-ui,-apple-system, Segoe UI, Roboto, Helvetica, Arial; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; letter-spacing:0}
     .text-stable-latin{font-family:Poppins, system-ui,-apple-system, Segoe UI, Roboto, Helvetica, Arial; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; letter-spacing:0}
 
-    /* 微粒子＆ドット＆スポット */
+    /* 粒子/ドット/スポット */
     .grain:before{content:""; position:fixed; inset:0; pointer-events:none; z-index:1;
       background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity=".05"/></svg>');
       mix-blend-mode:soft-light;}
@@ -101,10 +102,7 @@
     .snap>*{scroll-snap-align:start}
 
     /* スクロール連動 背景コード */
-    .scroll-code{
-      position:fixed; inset:0; pointer-events:none; z-index:0;
-      opacity:var(--scrollCodeOpacity); mix-blend-mode:normal;
-    }
+    .scroll-code{ position:fixed; inset:0; pointer-events:none; z-index:0; opacity:var(--scrollCodeOpacity); mix-blend-mode:normal; }
     .scroll-code pre{
       position:absolute; inset:0; margin:0; padding:10vh 5vw;
       color:#e7fbff;
@@ -127,115 +125,48 @@
     main.site{ position:relative; z-index:5; }
 
     /* ========= Painpoints XL Add-on ========= */
-    .pain-xl h2{
-      font-size:clamp(28px,5.2vw,58px);
-      letter-spacing:.01em;
-      text-shadow:0 14px 40px rgba(0,0,0,.45);
-    }
-    .pain-eyebrow{
-      display:inline-flex; align-items:center; gap:.5rem;
-      padding:.28rem .66rem; border-radius:999px;
-      background:linear-gradient(135deg,rgba(34,211,238,.18),rgba(167,139,250,.18));
-      border:1px solid rgba(255,255,255,.18);
-      font-weight:800; color:#c7f9ff; font-size:.88rem;
-    }
+    .pain-xl h2{ font-size:clamp(28px,5.2vw,58px); letter-spacing:.01em; text-shadow:0 14px 40px rgba(0,0,0,.45); }
+    .pain-eyebrow{ display:inline-flex; align-items:center; gap:.5rem; padding:.28rem .66rem; border-radius:999px; background:linear-gradient(135deg,rgba(34,211,238,.18),rgba(167,139,250,.18)); border:1px solid rgba(255,255,255,.18); font-weight:800; color:#c7f9ff; font-size:.88rem; }
     .pain-xl .grid{ gap:clamp(16px,2.4vw,32px); }
     .pain-xl .container{ max-width:min(1200px,92vw); }
-
-    .p-card.pain{
-      padding:clamp(26px,3vw,42px);
-      border-radius:28px;
-      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
-    }
-    .p-card.pain .p-icon{
-      position:relative;
-      width:72px; height:72px; border-radius:20px;
-      font-size:20px; display:grid; place-items:center;
-      background:linear-gradient(135deg,var(--c1),var(--c2));
-      color:#061016; font-weight:900;
-      box-shadow:0 8px 28px rgba(34,211,238,.28);
-    }
-    .p-card.pain .p-icon::after{
-      content:""; position:absolute; inset:-8px; border-radius:inherit;
-      background:radial-gradient(60% 60% at 50% 50%, rgba(34,211,238,.45), transparent 60%);
-      filter:blur(10px); opacity:.55; z-index:-1;
-    }
-    .p-card-number{
-      position:absolute; top:14px; right:18px;
-      font-weight:900; font-size:clamp(16px,2.2vw,24px); color:#a5f3fc; opacity:.9;
-      letter-spacing:.02em;
-    }
+    .p-card.pain{ padding:clamp(26px,3vw,42px); border-radius:28px; background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03)); }
+    .p-card.pain .p-icon{ position:relative; width:72px; height:72px; border-radius:20px; font-size:20px; display:grid; place-items:center; background:linear-gradient(135deg,var(--c1),var(--c2)); color:#061016; font-weight:900; box-shadow:0 8px 28px rgba(34,211,238,.28); }
+    .p-card.pain .p-icon::after{ content:""; position:absolute; inset:-8px; border-radius:inherit; background:radial-gradient(60% 60% at 50% 50%, rgba(34,211,238,.45), transparent 60%); filter:blur(10px); opacity:.55; z-index:-1; }
+    .p-card-number{ position:absolute; top:14px; right:18px; font-weight:900; font-size:clamp(16px,2.2vw,24px); color:#a5f3fc; opacity:.9; letter-spacing:.02em; }
     .p-title{ font-size:clamp(18px,2.4vw,28px); }
     .p-desc{ font-size:clamp(14px,1.5vw,18px); opacity:.96; }
-    .p-underline{height:2px; background:linear-gradient(90deg,var(--c1),transparent);
-      margin-top:.8rem; opacity:.9; transform-origin:left; transform:scaleX(.08);
-      transition:transform .6s ease;
-    }
+    .p-underline{ height:2px; background:linear-gradient(90deg,var(--c1),transparent); margin-top:.8rem; opacity:.9; transform-origin:left; transform:scaleX(.08); transition:transform .6s ease; }
     .reveal.is-visible .p-underline{ transform:scaleX(1); }
     .p-card.pain:hover{ box-shadow:0 26px 90px rgba(0,0,0,.55); }
-    .p-card.pain::after{
-      content:""; position:absolute; inset:-20%;
-      background:radial-gradient(600px 360px at var(--gx,60%) var(--gy,20%),
-        rgba(34,211,238,.14), transparent 60%);
-      filter:blur(18px); z-index:-1; transition:opacity .3s ease, transform .3s ease; opacity:.7;
-    }
+    .p-card.pain::after{ content:""; position:absolute; inset:-20%; background:radial-gradient(600px 360px at var(--gx,60%) var(--gy,20%), rgba(34,211,238,.14), transparent 60%); filter:blur(18px); z-index:-1; transition:opacity .3s ease, transform .3s ease; opacity:.7; }
     .p-card.pain:hover::after{ transform:scale(1.05); opacity:.95; }
-    /* ========= /Painpoints XL ========= */
-      /* ===== Mobile polish (<= md) ===== */
-@media (max-width: 767px){
-  /* Header：コンパクト＆境界線でキリッと */
-  header.glass{
-    background:linear-gradient(180deg,rgba(12,16,22,.75),rgba(12,16,22,.6));
-    border-bottom:1px solid rgba(255,255,255,.08);
-  }
-  header .btn{ padding:.5rem .8rem; }
-  header .btn-ghost{ padding:0; }
 
-  /* HERO：スクロール表示→小さな矢印だけ */
-  .scroll-ind{ left:50%; right:auto; transform:translateX(-50%); bottom:18px; }
-  .scroll-ind .mouse{ display:none; }
-  .scroll-ind span{
-    position:relative; display:block; width:26px; height:26px; font-size:0;
-    border:1.8px solid rgba(255,255,255,.7); border-left:0; border-top:0;
-    transform:rotate(45deg); border-radius:4px;
-    animation:arrowBounce 1.6s ease-in-out infinite;
-  }
-  @keyframes arrowBounce{
-    0%,100%{ transform:rotate(45deg) translateY(0); }
-    50%{ transform:rotate(45deg) translateY(6px); }
-  }
+    /* ===== Mobile polish (<= md) ===== */
+    @media (max-width: 767px){
+      header.glass{ background:linear-gradient(180deg,rgba(12,16,22,.75),rgba(12,16,22,.6)); border-bottom:1px solid rgba(255,255,255,.08); }
+      header .btn{ padding:.5rem .8rem; }
+      header .btn-ghost{ padding:0; }
+      .scroll-ind{ left:50%; right:auto; transform:translateX(-50%); bottom:18px; }
+      .scroll-ind .mouse{ display:none; }
+      .scroll-ind span{ position:relative; display:block; width:26px; height:26px; font-size:0; border:1.8px solid rgba(255,255,255,.7); border-left:0; border-top:0; transform:rotate(45deg); border-radius:4px; animation:arrowBounce 1.6s ease-in-out infinite; }
+      @keyframes arrowBounce{ 0%,100%{ transform:rotate(45deg) translateY(0); } 50%{ transform:rotate(45deg) translateY(6px); } }
+      .dot-bullet{ position:relative; padding-left:1.1em; }
+      .dot-bullet::before{ content:""; position:absolute; left:0; top:.55em; width:.46em; height:.46em; background:linear-gradient(90deg,var(--c1),var(--c2)); border-radius:9999px; }
 
-  /* “謎の？”が出る場合の丸印は文字でなくCSSで描く（使いたい要素に .dot-bullet を付与） */
-  .dot-bullet{ position:relative; padding-left:1.1em; }
-  .dot-bullet::before{
-    content:""; position:absolute; left:0; top:.55em; width:.46em; height:.46em;
-    background:linear-gradient(90deg,var(--c1),var(--c2)); border-radius:9999px;
-  }
+      #voices h2{ font-size:clamp(22px,7.5vw,30px); letter-spacing:.02em; }
+      #voices .snap{ gap:14px; }
+      #voices .glass{ border-radius:20px; background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02)); }
 
-  /* Voices：見出し＆カードのまとまり感をUP */
-  #voices h2{ font-size:clamp(22px,7.5vw,30px); letter-spacing:.02em; }
-  #voices .snap{ gap:14px; }
-  #voices .glass{
-    border-radius:20px;
-    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-  }
-
-  /* Compare：テーブル非表示→カード表示 */
-  #compare table{ display:none; }
-  #compare .cmp-list{ display:grid; gap:12px; }
-  #compare .cmp-card{
-    border-radius:18px; padding:14px 16px;
-    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-    border:1px solid rgba(255,255,255,.10);
-  }
-  #compare .cmp-card .brand{
-    font-size:12px; color:#a5b4fc; font-weight:700; letter-spacing:.02em; margin-bottom:.25rem;
-  }
-  #compare .cmp-card dl{ display:grid; grid-template-columns:92px 1fr; gap:.2rem .75rem; }
-  #compare .cmp-card dt{ color:#94a3b8; font-size:12px; }
-  #compare .cmp-card dd{ font-weight:800; }
-  #compare .cmp-card dd.em{ color:#a5f3fc; }
-}
+      /* Compare: SPはカード */
+      #compare table{ display:none; }
+      #compare .cmp-list{ display:grid; gap:12px; margin-top:12px; }
+      #compare .cmp-card{ border-radius:18px; padding:14px 16px; background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.10); }
+      #compare .cmp-card .brand{ font-size:12px; color:#a5b4fc; font-weight:700; letter-spacing:.02em; margin-bottom:.25rem; }
+      #compare .cmp-card dl{ display:grid; grid-template-columns:92px 1fr; gap:.2rem .75rem; }
+      #compare .cmp-card dt{ color:#94a3b8; font-size:12px; }
+      #compare .cmp-card dd{ font-weight:800; }
+      #compare .cmp-card dd.em{ color:#a5f3fc; }
+    }
   </style>
 </head>
 
@@ -271,35 +202,31 @@
           <a href="#about" class="hover:text-white">会社について</a>
           <a href="#qa" class="hover:text-white">Q&amp;A</a>
         </nav>
-<!-- 置き換え：ヘッダー右側のボタン群 -->
-<div class="flex items-center gap-2">
-  <!-- PC -->
-  <button class="btn btn-primary hidden md:inline-flex" @click="openConsult()">相談する</button>
-  <a :href="'tel:'+phoneNumber" class="btn btn-ghost hidden md:inline-flex">📞 電話</a>
-  <!-- SP（コンパクト） -->
-  <button class="btn btn-primary md:hidden px-3 py-2 rounded-xl text-base" @click="openConsult()">相談</button>
-  <a :href="'tel:'+phoneNumber" aria-label="電話する"
-     class="md:hidden grid place-items-center w-10 h-10 rounded-xl bg-white/10 border border-white/15">📞</a>
-</div>
+        <!-- 右側ボタン -->
+        <div class="flex items-center gap-2">
+          <button class="btn btn-primary hidden md:inline-flex" @click="openConsult()">相談する</button>
+          <a :href="'tel:'+phoneNumber" class="btn btn-ghost hidden md:inline-flex">📞 電話</a>
+          <button class="btn btn-primary md:hidden px-3 py-2 rounded-xl text-base" @click="openConsult()">相談</button>
+          <a :href="'tel:'+phoneNumber" aria-label="電話する"
+             class="md:hidden grid place-items-center w-10 h-10 rounded-xl bg-white/10 border border-white/15">📞</a>
+        </div>
       </div>
     </header>
 
     <!-- HERO（動画背景＋本文） -->
     <section id="top" class="pt-28 md:pt-36 pb-44 relative overflow-hidden">
-      <!-- SP: 画像 / PC: 動画 -->
-<!-- 置き換え -->
-<picture id="heroPoster" class="absolute inset-0 hidden">
-  <img src="assets/hero-meeting-poster.jpg" alt="" class="w-full h-full object-cover">
-</picture>
+      <picture id="heroPoster" class="absolute inset-0 hidden">
+        <img src="assets/hero-meeting-poster.jpg" alt="" class="w-full h-full object-cover">
+      </picture>
 
-<video id="heroVideo"
-  class="absolute inset-0 w-full h-full object-cover hero-vid"
-  autoplay muted playsinline webkit-playsinline loop preload="metadata"
-  poster="assets/hero-meeting-poster.jpg">
-  <!-- （あれば）webmも追加するとさらに堅い -->
-  <!-- <source src="assets/hero-meeting.webm" type="video/webm"> -->
-  <source src="assets/hero-meeting.mp4" type="video/mp4">
-</video>
+      <video id="heroVideo"
+        class="absolute inset-0 w-full h-full object-cover hero-vid"
+        autoplay muted playsinline webkit-playsinline loop preload="metadata"
+        poster="assets/hero-meeting-poster.jpg">
+        <!-- <source src="assets/hero-meeting.webm" type="video/webm"> -->
+        <source src="assets/hero-meeting.mp4" type="video/mp4">
+      </video>
+
       <!-- オーバーレイ -->
       <div class="absolute inset-0 pointer-events-none"
            style="background:
@@ -344,7 +271,6 @@
         <h2 class="mt-3 font-black text-stable-jp reveal" data-reveal>こんなことでお困りではありませんか？</h2>
 
         <div class="mt-8 grid md:grid-cols-3">
-          <!-- 01 -->
           <article class="p-card pain reveal relative" data-reveal @mousemove="tilt($event)" @mouseleave="untilt($event)">
             <span class="p-card-number">01</span>
             <div class="p-icon">UI</div>
@@ -353,7 +279,6 @@
             <p class="p-desc text-slate-200 mt-3 text-stable-jp" data-type="高速表示・スマホ最適・写真/文章の見直しで“伝わる”サイトに刷新。"></p>
           </article>
 
-          <!-- 02 -->
           <article class="p-card pain reveal relative" data-reveal @mousemove="tilt($event)" @mouseleave="untilt($event)">
             <span class="p-card-number">02</span>
             <div class="p-icon">CV</div>
@@ -362,7 +287,6 @@
             <p class="p-desc text-slate-200 mt-3 text-stable-jp" data-type="導線再設計＋簡易AB、SEO初期対策でCVRを底上げ。"></p>
           </article>
 
-          <!-- 03 -->
           <article class="p-card pain reveal relative" data-reveal @mousemove="tilt($event)" @mouseleave="untilt($event)">
             <span class="p-card-number">03</span>
             <div class="p-icon">TX</div>
@@ -382,7 +306,6 @@
         <p class="text-slate-400 mt-1 text-stable-jp reveal" data-reveal data-type="※下記は目安（税別）。要件定義後に正式お見積りをご提示します。"></p>
 
         <div class="grid md:grid-cols-3 gap-6 mt-8">
-          <!-- HP/LP -->
           <article class="card reveal" data-reveal @mousemove="tilt($event)" @mouseleave="untilt($event)">
             <span class="shine"></span>
             <div class="relative z-10">
@@ -406,7 +329,6 @@
             </div>
           </article>
 
-          <!-- EC -->
           <article class="card reveal" data-reveal @mousemove="tilt($event)" @mouseleave="untilt($event)">
             <span class="shine"></span>
             <div class="relative z-10">
@@ -427,7 +349,6 @@
             </div>
           </article>
 
-          <!-- DX -->
           <article class="card reveal" data-reveal @mousemove="tilt($event)" @mouseleave="untilt($event)">
             <span class="shine"></span>
             <div class="relative z-10">
@@ -498,43 +419,42 @@
             </tbody>
           </table>
         </div>
+
+        <!-- SP専用：カード比較（PCはテーブルを表示） -->
+        <div class="md:hidden cmp-list">
+          <div class="cmp-card">
+            <div class="brand">CCstudio</div>
+            <dl>
+              <dt>スピード</dt><dd class="em">最短5営業日</dd>
+              <dt>自由度</dt><dd class="em">フルコーディング</dd>
+              <dt>集客設計</dt><dd class="em">SEO/導線/AB同時</dd>
+              <dt>運用/保守</dt><dd class="em">軽保守で継続</dd>
+              <dt>価格柔軟性</dt><dd class="em">要件に応じ最適化</dd>
+            </dl>
+          </div>
+          <div class="cmp-card">
+            <div class="brand">テンプレ制作</div>
+            <dl>
+              <dt>スピード</dt><dd>2〜4週間</dd>
+              <dt>自由度</dt><dd>制約多め</dd>
+              <dt>集客設計</dt><dd>最低限</dd>
+              <dt>運用/保守</dt><dd>スポット</dd>
+              <dt>価格柔軟性</dt><dd>固定</dd>
+            </dl>
+          </div>
+          <div class="cmp-card">
+            <div class="brand">大手代理店</div>
+            <dl>
+              <dt>スピード</dt><dd>1〜2ヶ月</dd>
+              <dt>自由度</dt><dd>要審査</dd>
+              <dt>集客設計</dt><dd>別チーム</dd>
+              <dt>運用/保守</dt><dd>高額契約</dd>
+              <dt>価格柔軟性</dt><dd>固定＋手数料</dd>
+            </dl>
+          </div>
+        </div>
       </div>
     </section>
-<!-- SP専用：カード比較（PCは従来テーブルのまま） -->
-<div class="md:hidden mt-4 cmp-list">
-  <div class="cmp-card">
-    <div class="brand">CCstudio</div>
-    <dl>
-      <dt>スピード</dt><dd class="em">最短5営業日</dd>
-      <dt>自由度</dt><dd class="em">フルコーディング</dd>
-      <dt>集客設計</dt><dd class="em">SEO/導線/AB同時</dd>
-      <dt>運用/保守</dt><dd class="em">軽保守で継続</dd>
-      <dt>価格柔軟性</dt><dd class="em">要件に応じ最適化</dd>
-    </dl>
-  </div>
-
-  <div class="cmp-card">
-    <div class="brand">テンプレ制作</div>
-    <dl>
-      <dt>スピード</dt><dd>2〜4週間</dd>
-      <dt>自由度</dt><dd>制約多め</dd>
-      <dt>集客設計</dt><dd>最低限</dd>
-      <dt>運用/保守</dt><dd>スポット</dd>
-      <dt>価格柔軟性</dt><dd>固定</dd>
-    </dl>
-  </div>
-
-  <div class="cmp-card">
-    <div class="brand">大手代理店</div>
-    <dl>
-      <dt>スピード</dt><dd>1〜2ヶ月</dd>
-      <dt>自由度</dt><dd>要審査</dd>
-      <dt>集客設計</dt><dd>別チーム</dd>
-      <dt>運用/保守</dt><dd>高額契約</dd>
-      <dt>価格柔軟性</dt><dd>固定＋手数料</dd>
-    </dl>
-  </div>
-</div>
 
     <!-- ⑤ お客様の声 -->
     <section id="voices" class="sec bg-voices py-16">
@@ -556,6 +476,7 @@
             </article>
           </template>
 
+          <!-- 追加例 -->
           <article class="min-w-[82%] md:min-w-[46%] glass rounded-2xl p-6 reveal" data-reveal>
             <div class="flex items-center gap-4">
               <img src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=256&auto=format&fit=crop" class="w-16 h-16 rounded-full object-cover" alt="">
@@ -644,7 +565,7 @@
         <a href="#" aria-label="LINE"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M20.5 3A6.5 6.5 0 0 1 27 9.5v1A9.5 9.5 0 0 1 17.5 20h-.7l-3.6 3.2a1 1 0 0 1-1.7-.7v-2.6A9.5 9.5 0 0 1 3 10.5v-1A6.5 6.5 0 0 1 9.5 3h11z" transform="scale(.83) translate(2.8,1.6)"/></svg></a>
       </div>
     </footer>
-  </main> <!-- ← ここでちゃんと閉じる -->
+  </main>
 
   <!-- ===== Modals ===== -->
   <div class="fixed inset-0 bg-black/55 backdrop-blur-md grid place-items-center z-50" x-show="modals.detail" x-transition.opacity>
@@ -753,29 +674,38 @@ const run = () => audit() && optimize();
           {id:3,img:"https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=256&auto=format&fit=crop",role:"EC / カフェ店長",text:"ネットから買えるようになって売上が底上げされました。"},
         ],
 
-init(){
-  if (this._started) return; this._started = true;
-  /* …既存… */
-  this._intro();
-  this._initReveal(); this._initProgress(); this._bindScrollCode();
-  this._autoplayHero(); // ← 追加
-},
+        init(){
+          if (this._started) return; this._started = true;
 
-_autoplayHero(){
-  const v = document.getElementById('heroVideo');
-  if(!v) return;
-  v.muted = true; v.playsInline = true;
-  const play = () => v.play().catch(()=>{});
-  play();
-  const resume = () => { play(); window.removeEventListener('pointerdown', resume); };
-  window.addEventListener('pointerdown', resume, { once:true });
-  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) play(); });
-  v.addEventListener('error', ()=>{
-    // 失敗時はポスターにフォールバック
-    document.getElementById('heroPoster')?.classList.remove('hidden');
-    v.classList.add('hidden');
-  });
-}
+          // スポットの強さ（タッチ端末は弱め）
+          this.isCoarse = matchMedia('(pointer:coarse)').matches;
+          if (this.isCoarse){ document.documentElement.style.setProperty('--spotStrength','.10'); this._pulseSpot(); }
+
+          // フォント読み込み後にイントロ開始
+          if (document.fonts && document.fonts.ready) { document.fonts.ready.then(()=> this._intro()); }
+          else { this._intro(); }
+
+          this._initReveal();
+          this._initProgress();
+          this._bindScrollCode();
+          this._autoplayHero();
+        },
+
+        _autoplayHero(){
+          const v = document.getElementById('heroVideo');
+          if(!v) return;
+          v.muted = true; v.playsInline = true;
+          const play = () => v.play().catch(()=>{});
+          play();
+          const resume = () => { play(); window.removeEventListener('pointerdown', resume); };
+          window.addEventListener('pointerdown', resume, { once:true });
+          document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) play(); });
+          v.addEventListener('error', ()=>{
+            // 失敗時はポスターにフォールバック
+            document.getElementById('heroPoster')?.classList.remove('hidden');
+            v.classList.add('hidden');
+          });
+        },  /* ← ここがカンマ必須！ */
 
         async _intro(){
           const code =
@@ -881,7 +811,7 @@ const speed = "最短5営業日";`;
         _bindScrollCode(){
           const update=()=>{
             const h=document.documentElement, sc=h.scrollTop, max=h.scrollHeight-h.clientHeight, pct=max>0?sc/max:0;
-            this.scrollIndex=Math.floor(this.scrollCode.length * (pct*1.05));
+            this.scrollIndex=Math.floor(this.scrollCode.length * (pct*1.05)); // 少し先行
           };
           update(); addEventListener('scroll',update,{passive:true}); addEventListener('resize',update);
         },
