@@ -16,8 +16,10 @@
     /* HERO動画 */
     .hero-vid{ filter:saturate(1.18) contrast(1.05) brightness(.78) hue-rotate(10deg); animation:heroZoom 18s ease-in-out infinite alternate }
     @keyframes heroZoom{ from{transform:scale(1.02)} to{transform:scale(1.06)} }
-    @media (prefers-reduced-motion: reduce){ .hero-vid{ animation:none;}}
-
+   /* 置き換え */
+@media (prefers-reduced-motion: reduce){
+  .hero-vid{ animation:none; filter:brightness(.85); } /* display:none をやめる */
+}
     :root{
       --bg:#0b0f14; --ink:#e5e7eb;
       --c1:#22d3ee; --c2:#a78bfa; --c3:#f472b6;
@@ -179,6 +181,61 @@
     }
     .p-card.pain:hover::after{ transform:scale(1.05); opacity:.95; }
     /* ========= /Painpoints XL ========= */
+      /* ===== Mobile polish (<= md) ===== */
+@media (max-width: 767px){
+  /* Header：コンパクト＆境界線でキリッと */
+  header.glass{
+    background:linear-gradient(180deg,rgba(12,16,22,.75),rgba(12,16,22,.6));
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  header .btn{ padding:.5rem .8rem; }
+  header .btn-ghost{ padding:0; }
+
+  /* HERO：スクロール表示→小さな矢印だけ */
+  .scroll-ind{ left:50%; right:auto; transform:translateX(-50%); bottom:18px; }
+  .scroll-ind .mouse{ display:none; }
+  .scroll-ind span{
+    position:relative; display:block; width:26px; height:26px; font-size:0;
+    border:1.8px solid rgba(255,255,255,.7); border-left:0; border-top:0;
+    transform:rotate(45deg); border-radius:4px;
+    animation:arrowBounce 1.6s ease-in-out infinite;
+  }
+  @keyframes arrowBounce{
+    0%,100%{ transform:rotate(45deg) translateY(0); }
+    50%{ transform:rotate(45deg) translateY(6px); }
+  }
+
+  /* “謎の？”が出る場合の丸印は文字でなくCSSで描く（使いたい要素に .dot-bullet を付与） */
+  .dot-bullet{ position:relative; padding-left:1.1em; }
+  .dot-bullet::before{
+    content:""; position:absolute; left:0; top:.55em; width:.46em; height:.46em;
+    background:linear-gradient(90deg,var(--c1),var(--c2)); border-radius:9999px;
+  }
+
+  /* Voices：見出し＆カードのまとまり感をUP */
+  #voices h2{ font-size:clamp(22px,7.5vw,30px); letter-spacing:.02em; }
+  #voices .snap{ gap:14px; }
+  #voices .glass{
+    border-radius:20px;
+    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  }
+
+  /* Compare：テーブル非表示→カード表示 */
+  #compare table{ display:none; }
+  #compare .cmp-list{ display:grid; gap:12px; }
+  #compare .cmp-card{
+    border-radius:18px; padding:14px 16px;
+    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.10);
+  }
+  #compare .cmp-card .brand{
+    font-size:12px; color:#a5b4fc; font-weight:700; letter-spacing:.02em; margin-bottom:.25rem;
+  }
+  #compare .cmp-card dl{ display:grid; grid-template-columns:92px 1fr; gap:.2rem .75rem; }
+  #compare .cmp-card dt{ color:#94a3b8; font-size:12px; }
+  #compare .cmp-card dd{ font-weight:800; }
+  #compare .cmp-card dd.em{ color:#a5f3fc; }
+}
   </style>
 </head>
 
@@ -214,25 +271,34 @@
           <a href="#about" class="hover:text-white">会社について</a>
           <a href="#qa" class="hover:text-white">Q&amp;A</a>
         </nav>
-        <div class="flex items-center gap-3">
-          <button class="btn btn-primary" @click="openConsult()">相談する</button>
-          <a :href="'tel:'+phoneNumber" class="btn btn-ghost">📞 電話</a>
-        </div>
+<!-- 置き換え：ヘッダー右側のボタン群 -->
+<div class="flex items-center gap-2">
+  <!-- PC -->
+  <button class="btn btn-primary hidden md:inline-flex" @click="openConsult()">相談する</button>
+  <a :href="'tel:'+phoneNumber" class="btn btn-ghost hidden md:inline-flex">📞 電話</a>
+  <!-- SP（コンパクト） -->
+  <button class="btn btn-primary md:hidden px-3 py-2 rounded-xl text-base" @click="openConsult()">相談</button>
+  <a :href="'tel:'+phoneNumber" aria-label="電話する"
+     class="md:hidden grid place-items-center w-10 h-10 rounded-xl bg-white/10 border border-white/15">📞</a>
+</div>
       </div>
     </header>
 
     <!-- HERO（動画背景＋本文） -->
     <section id="top" class="pt-28 md:pt-36 pb-44 relative overflow-hidden">
       <!-- SP: 画像 / PC: 動画 -->
-      <picture class="absolute inset-0 block md:hidden">
-        <img src="/assets/hero-lighttrails-poster.jpg" alt="" class="w-full h-full object-cover">
-      </picture>
+<!-- 置き換え -->
+<picture id="heroPoster" class="absolute inset-0 hidden">
+  <img src="assets/hero-meeting-poster.jpg" alt="" class="w-full h-full object-cover">
+</picture>
+
 <video id="heroVideo"
-  class="absolute inset-0 w-full h-full object-cover hidden md:block hero-vid"
+  class="absolute inset-0 w-full h-full object-cover hero-vid"
   autoplay muted playsinline webkit-playsinline loop preload="metadata"
-  poster="./assets/hero-meeting-poster.jpg">
-  <source src="./assets/hero-meeting.webm" type="video/webm"> <!-- あれば -->
-  <source src="./assets/hero-meeting.mp4"  type="video/mp4">
+  poster="assets/hero-meeting-poster.jpg">
+  <!-- （あれば）webmも追加するとさらに堅い -->
+  <!-- <source src="assets/hero-meeting.webm" type="video/webm"> -->
+  <source src="assets/hero-meeting.mp4" type="video/mp4">
 </video>
       <!-- オーバーレイ -->
       <div class="absolute inset-0 pointer-events-none"
@@ -434,6 +500,41 @@
         </div>
       </div>
     </section>
+<!-- SP専用：カード比較（PCは従来テーブルのまま） -->
+<div class="md:hidden mt-4 cmp-list">
+  <div class="cmp-card">
+    <div class="brand">CCstudio</div>
+    <dl>
+      <dt>スピード</dt><dd class="em">最短5営業日</dd>
+      <dt>自由度</dt><dd class="em">フルコーディング</dd>
+      <dt>集客設計</dt><dd class="em">SEO/導線/AB同時</dd>
+      <dt>運用/保守</dt><dd class="em">軽保守で継続</dd>
+      <dt>価格柔軟性</dt><dd class="em">要件に応じ最適化</dd>
+    </dl>
+  </div>
+
+  <div class="cmp-card">
+    <div class="brand">テンプレ制作</div>
+    <dl>
+      <dt>スピード</dt><dd>2〜4週間</dd>
+      <dt>自由度</dt><dd>制約多め</dd>
+      <dt>集客設計</dt><dd>最低限</dd>
+      <dt>運用/保守</dt><dd>スポット</dd>
+      <dt>価格柔軟性</dt><dd>固定</dd>
+    </dl>
+  </div>
+
+  <div class="cmp-card">
+    <div class="brand">大手代理店</div>
+    <dl>
+      <dt>スピード</dt><dd>1〜2ヶ月</dd>
+      <dt>自由度</dt><dd>要審査</dd>
+      <dt>集客設計</dt><dd>別チーム</dd>
+      <dt>運用/保守</dt><dd>高額契約</dd>
+      <dt>価格柔軟性</dt><dd>固定＋手数料</dd>
+    </dl>
+  </div>
+</div>
 
     <!-- ⑤ お客様の声 -->
     <section id="voices" class="sec bg-voices py-16">
@@ -652,32 +753,29 @@ const run = () => audit() && optimize();
           {id:3,img:"https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=256&auto=format&fit=crop",role:"EC / カフェ店長",text:"ネットから買えるようになって売上が底上げされました。"},
         ],
 
-        init(){
-          if (this._started) return; this._started = true;
+init(){
+  if (this._started) return; this._started = true;
+  /* …既存… */
+  this._intro();
+  this._initReveal(); this._initProgress(); this._bindScrollCode();
+  this._autoplayHero(); // ← 追加
+},
 
-          this.isCoarse = matchMedia('(pointer:coarse)').matches;
-          if (this.isCoarse){ document.documentElement.style.setProperty('--spotStrength','.10'); this._pulseSpot(); }
-
-          // Intro開始（フォント待ち）
-          if (document.fonts && document.fonts.ready) { document.fonts.ready.then(()=> this._intro()); }
-          else { this._intro(); }
-
-          this._initReveal();
-          this._initProgress();
-          this._bindScrollCode();
-
-          // HERO動画のオートプレイ補助（Safari/iOS対策）
-          setTimeout(()=>{
-            const v = document.getElementById('heroVideo');
-            if(!v) return;
-            v.muted = true;
-            const tryPlay = () => v.play().catch(()=>{});
-            tryPlay();
-            const resume = () => { tryPlay(); window.removeEventListener('pointerdown', resume); window.removeEventListener('touchstart', resume); };
-            window.addEventListener('pointerdown', resume, { once:true });
-            window.addEventListener('touchstart', resume, { once:true });
-          }, 0);
-        },
+_autoplayHero(){
+  const v = document.getElementById('heroVideo');
+  if(!v) return;
+  v.muted = true; v.playsInline = true;
+  const play = () => v.play().catch(()=>{});
+  play();
+  const resume = () => { play(); window.removeEventListener('pointerdown', resume); };
+  window.addEventListener('pointerdown', resume, { once:true });
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) play(); });
+  v.addEventListener('error', ()=>{
+    // 失敗時はポスターにフォールバック
+    document.getElementById('heroPoster')?.classList.remove('hidden');
+    v.classList.add('hidden');
+  });
+}
 
         async _intro(){
           const code =
