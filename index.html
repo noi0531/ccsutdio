@@ -16,7 +16,7 @@
     /* HERO動画 */
     .hero-vid{ filter:saturate(1.18) contrast(1.05) brightness(.78) hue-rotate(10deg); animation:heroZoom 18s ease-in-out infinite alternate }
     @keyframes heroZoom{ from{transform:scale(1.02)} to{transform:scale(1.06)} }
-    @media (prefers-reduced-motion: reduce){ .hero-vid{ display:none } }
+    @media (prefers-reduced-motion: reduce){ .hero-vid{ animation:none;}}
 
     :root{
       --bg:#0b0f14; --ink:#e5e7eb;
@@ -230,8 +230,9 @@
 <video id="heroVideo"
   class="absolute inset-0 w-full h-full object-cover hidden md:block hero-vid"
   autoplay muted playsinline webkit-playsinline loop preload="metadata"
-  poster="assets hero-meeting-poster.jpg">
-  <source src="assets hero-meeting.mp4" type="video/mp4">
+  poster="./assets/hero-meeting-poster.jpg">
+  <source src="./assets/hero-meeting.webm" type="video/webm"> <!-- あれば -->
+  <source src="./assets/hero-meeting.mp4"  type="video/mp4">
 </video>
       <!-- オーバーレイ -->
       <div class="absolute inset-0 pointer-events-none"
