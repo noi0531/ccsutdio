@@ -219,13 +219,15 @@
         <img src="assets/hero-meeting-poster.jpg" alt="" class="w-full h-full object-cover">
       </picture>
 
-      <video id="heroVideo"
-        class="absolute inset-0 w-full h-full object-cover hero-vid"
-        autoplay muted playsinline webkit-playsinline loop preload="metadata"
-        poster="assets/hero-meeting-poster.jpg">
-        <!-- <source src="assets/hero-meeting.webm" type="video/webm"> -->
-        <source src="assets/hero-meeting.mp4" type="video/mp4">
-      </video>
+<video id="heroVideo"
+  class="absolute inset-0 w-full h-full object-cover hero-vid"
+  autoplay muted playsinline webkit-playsinline loop preload="auto"
+  poster="/assets/hero-meeting-poster.jpg" crossorigin="anonymous" tabindex="-1" aria-hidden="true">
+  <!-- Chrome/Firefox 用（H.264 が無い環境の保険） -->
+  <source src="/assets/hero-meeting.webm" type="video/webm">
+  <!-- Safari/Edge/Chrome 用 -->
+  <source src="/assets/hero-meeting.mp4" type="video/mp4">
+</video>
 
       <!-- オーバーレイ -->
       <div class="absolute inset-0 pointer-events-none"
@@ -691,21 +693,50 @@ const run = () => audit() && optimize();
           this._autoplayHero();
         },
 
-        _autoplayHero(){
-          const v = document.getElementById('heroVideo');
-          if(!v) return;
-          v.muted = true; v.playsInline = true;
-          const play = () => v.play().catch(()=>{});
-          play();
-          const resume = () => { play(); window.removeEventListener('pointerdown', resume); };
-          window.addEventListener('pointerdown', resume, { once:true });
-          document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) play(); });
-          v.addEventListener('error', ()=>{
-            // 失敗時はポスターにフォールバック
-            document.getElementById('heroPoster')?.classList.remove('hidden');
-            v.classList.add('hidden');
-          });
-        },  /* ← ここがカンマ必須！ */
+_autoplayHero(){
+  const v = document.getElementById('heroVideo');
+  if(!v) return;
+
+  // 自動再生の“おまじない”は属性とプロパティ両方
+  v.muted = true;
+  v.defaultMuted = true;
+  v.setAttribute('muted','');
+  v.setAttribute('playsinline','');
+  v.setAttribute('webkit-playsinline','');
+
+  const tryPlay = () => v.play().catch(err=>{
+    console.debug('[heroVideo] autoplay blocked:', err?.name || err);
+  });
+
+  // 読み込めたタイミングで再生を試す
+  if (v.readyState >= 2) { tryPlay(); }
+  else {
+    v.addEventListener('loadeddata', tryPlay, { once:true });
+    v.addEventListener('canplay', tryPlay, { once:true });
+  }
+
+  // ユーザー操作があれば即再試行（iOS/Safari 対策）
+  const resume = () => { tryPlay(); 
+    window.removeEventListener('pointerdown', resume);
+    window.removeEventListener('touchstart', resume);
+  };
+  window.addEventListener('pointerdown', resume, { once:true });
+  window.addEventListener('touchstart', resume, { once:true, passive:true });
+
+  // タブ復帰時にも再試行
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) tryPlay(); });
+
+  // エラー時はポスターにフォールバック＆原因をログ
+  v.addEventListener('error', (e)=>{
+    console.error('[heroVideo] error:', v.error || e);
+    document.getElementById('heroPoster')?.classList.remove('hidden');
+    v.classList.add('hidden');
+  });
+
+  // 念のため
+  v.load();
+  tryPlay();
+},
 
         async _intro(){
           const code =
