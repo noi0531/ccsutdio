@@ -167,7 +167,20 @@
       #compare .cmp-card dd{ font-weight:800; }
       #compare .cmp-card dd.em{ color:#a5f3fc; }
     }
-  </style>
+  /* ---- HERO text fix ---- */
+  .balance { text-wrap: balance; }           /* きれいな改行 */
+  .break-anywhere { overflow-wrap:anywhere; word-break:normal; } /* 英字も必ず折返し */
+
+  /* スマホで暴れないサイズに */
+  .hero-title { font-size: clamp(26px, 10.5vw, 56px); line-height: 1.05; }
+  .hero-sub   { font-size: clamp(18px, 6.2vw, 38px);  line-height: 1.1; }
+  .hero-tag   { font-size: clamp(18px, 7.2vw, 42px);  line-height: 1.1; }
+
+  /* きつい端末幅での保険：横はみ出しを防ぐ */
+@media (max-width: 480px){
+  #top { overflow-x: visible; }   /* y はそのまま */
+}
+</style>
 </head>
 
 <body class="grain dots">
@@ -238,18 +251,20 @@
       <!-- 本文 -->
       <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="mt-6 md:mt-10 space-y-4">
-          <h1 class="headline text-stable-jp font-black leading-[0.95] text-[12vw] md:text-[8vw]"
-              x-show="hero.showTitle" x-transition.opacity>常に挑戦者で─。</h1>
+        <h1 class="headline text-stable-jp font-black hero-title balance"
+    x-show="hero.showTitle" x-transition.opacity>
+  常に挑戦者で─。
+</h1>
 
-          <div class="text-stable-jp font-black text-[6vw] md:text-[3.6vw]"
-               x-show="hero.showSub" x-transition.opacity>
-            <span x-text="hero.subTyped"></span><span class="caret" x-show="hero.showSubCaret"></span>
-          </div>
+<div class="text-stable-jp font-black hero-sub balance"
+     x-show="hero.showSub" x-transition.opacity>
+  <span x-text="hero.subTyped"></span><span class="caret" x-show="hero.showSubCaret"></span>
+</div>
 
-          <p class="text-stable-jp font-black text-[7.2vw] md:text-[4.6vw]"
-             x-show="hero.showTagline" x-transition.opacity>
-            <span x-text="hero.taglineTyped"></span><span class="caret" x-show="hero.showTaglineCaret"></span>
-          </p>
+<p class="text-stable-jp font-black hero-tag balance break-anywhere"
+   x-show="hero.showTagline" x-transition.opacity>
+  <span x-text="hero.taglineTyped"></span><span class="caret" x-show="hero.showTaglineCaret"></span>
+</p>
 
           <div class="pt-3 flex gap-3">
             <button class="btn btn-primary" @click="openConsult()">まずは相談</button>
@@ -336,7 +351,7 @@
               <h3 class="text-xl font-extrabold text-stable-jp">EC サイト</h3>
               <div class="mt-4">
                 <div class="text-5xl md:text-6xl font-black leading-none">1万円〜</div>
-                <div class="text-4xl md:text-5xl font-black text-slate-300 mt-1">〜¥10万円</div>
+                <div class="text-4xl md:text-5xl font-black text-slate-300 mt-1">¥10万円</div>
               </div>
               <ul class="mt-5 space-y-2 text-slate-300 text-stable-jp">
                 <li class="reveal" data-reveal data-type="Shopify/BASE/Headless から最適方式を選定"></li>
