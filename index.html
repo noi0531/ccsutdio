@@ -219,16 +219,13 @@
         <img src="assets/hero-meeting-poster.jpg" alt="" class="w-full h-full object-cover">
       </picture>
 
+<!-- preload を auto → metadata に戻すだけ -->
 <video id="heroVideo"
   class="absolute inset-0 w-full h-full object-cover hero-vid"
-  autoplay muted playsinline webkit-playsinline loop preload="auto"
+  autoplay muted playsinline webkit-playsinline loop preload="metadata"
   poster="assets/hero-meeting-poster.jpg" tabindex="-1" aria-hidden="true">
-  <!-- まず相対パス（存在する方を先に） -->
   <source src="assets/hero-meeting.webm" type="video/webm">
   <source src="assets/hero-meeting.mp4"  type="video/mp4">
-  <!-- 予備：ルート相対（本当にルートに置いてる場合のみ意味あり） -->
-  <source src="/assets/hero-meeting.webm" type="video/webm">
-  <source src="/assets/hero-meeting.mp4"  type="video/mp4">
 </video>
 
       <!-- オーバーレイ -->
@@ -686,9 +683,16 @@ const run = () => audit() && optimize();
           if (this.isCoarse){ document.documentElement.style.setProperty('--spotStrength','.10'); this._pulseSpot(); }
 
           // フォント読み込み後にイントロ開始
-          if (document.fonts && document.fonts.ready) { document.fonts.ready.then(()=> this._intro()); }
-          else { this._intro(); }
-
+       const startIntro = () => this._intro();
+         // 先に isCoarse を判定してから↓を実行してね（あなたのコードはそうなってます）
+if (document.fonts?.ready && !this.isCoarse) {
+  // PCはフォントを待つが、長引いても 600ms で始める
+  Promise.race([document.fonts.ready, new Promise(r=>setTimeout(r,600))])
+    .then(startIntro);
+} else {
+  // スマホ/タブレットは即開始
+  requestAnimationFrame(startIntro);
+}   
           this._initReveal();
           this._initProgress();
           this._bindScrollCode();
