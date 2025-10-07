@@ -222,11 +222,13 @@
 <video id="heroVideo"
   class="absolute inset-0 w-full h-full object-cover hero-vid"
   autoplay muted playsinline webkit-playsinline loop preload="auto"
-  poster="/assets/hero-meeting-poster.jpg" crossorigin="anonymous" tabindex="-1" aria-hidden="true">
-  <!-- Chrome/Firefox 用（H.264 が無い環境の保険） -->
+  poster="assets/hero-meeting-poster.jpg" tabindex="-1" aria-hidden="true">
+  <!-- まず相対パス（存在する方を先に） -->
+  <source src="assets/hero-meeting.webm" type="video/webm">
+  <source src="assets/hero-meeting.mp4"  type="video/mp4">
+  <!-- 予備：ルート相対（本当にルートに置いてる場合のみ意味あり） -->
   <source src="/assets/hero-meeting.webm" type="video/webm">
-  <!-- Safari/Edge/Chrome 用 -->
-  <source src="/assets/hero-meeting.mp4" type="video/mp4">
+  <source src="/assets/hero-meeting.mp4"  type="video/mp4">
 </video>
 
       <!-- オーバーレイ -->
